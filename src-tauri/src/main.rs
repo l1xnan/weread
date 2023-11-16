@@ -9,14 +9,6 @@ fn greet(name: &str) -> String {
   format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
-const INIT_SCRIPT: &str = r#"
-    if (window.location.origin === 'https://weread.qq.com') {
-      console.log("hello world from js init script");
-  
-      window.__MY_CUSTOM_PROPERTY__ = { foo: 'bar' };
-    }
-  "#;
-
 fn inject_style(css: &str) -> String {
   format!(
     r#"
@@ -42,7 +34,7 @@ fn main() {
         "weread",
         tauri::WindowUrl::External("https://weread.qq.com".parse().unwrap()),
       )
-      .initialization_script(INIT_SCRIPT)
+      .initialization_script(include_str!("../inject/preload.js"))
       .initialization_script(&inject_style(include_str!("../inject/style.css")))
       .build()?;
       let _ = win.set_title("微信读书");

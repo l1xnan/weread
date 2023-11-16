@@ -52,18 +52,26 @@ html body.wr_whiteTheme,
 .wr_whiteTheme .readerTopBar,
 .wr_whiteTheme .readerBottomBar,
 .wr_whiteTheme .readerBottomSettingPanel,
-.wr_whiteTheme .recommend_preview_item,
-.wr_whiteTheme .readerFooter_button {
+.wr_whiteTheme .recommend_preview_item {
   background-color: #f9f3e8 !important;
+}
+
+.wr_whiteTheme .readerFooter_button {
+  background-color: #efebe3 !important;
+}
+
+.readerTopBar {
+  height: 48px !important;
+}
+.navBarOffset {
+  padding-top: 56px !important;
 }
 
 /* 隐藏控制条，底部 hover 显示 */
 /* .readerTopBar, */
 /* .readerControls_item, */
 .readerMemberCardTips,
-.navBarOffset
-/* 下载App按钮 */
-.readerControls_item.download {
+.readerControls_item.download /* 下载App按钮 */ {
   display: none !important;
 }
 
