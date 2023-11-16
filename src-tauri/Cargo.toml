@@ -1,7 +1,7 @@
 [package]
 name = "weread"
 version = "0.0.0"
-description = "A Tauri App"
+description = "微信读书"
 authors = ["you"]
 license = ""
 repository = ""

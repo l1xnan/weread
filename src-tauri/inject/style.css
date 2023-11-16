@@ -1,12 +1,25 @@
+/* ---------- 设置正文字体 ---------- */
 * {
-  font-family: '仓耳明黑' !important;
+  font-family: "仓耳明黑" !important;
 }
 
-/* 去除 body 滚动条 */
-body::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+/* ---------- 修改滚动条样式 ---------- */
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 12px;
+  background-color: #f7f8fa;
 }
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  min-height: 12px;
+  background-color: #8b8b8b;
+}
+
+*::-webkit-scrollbar-corner {
+  background-color: #f7f8fa;
+}
+
 /* 修改文本两侧边距 */
 .readerChapterContent {
   margin-left: 2rem;
@@ -19,6 +32,9 @@ body::-webkit-scrollbar {
 .readerControls_fontSize:hover {
   opacity: 1 !important;
 }
+
+/* ---------- 亮主题设置 ---------- */
+
 /* 修改亮色主题背景颜色及阴影 */
 .wr_whiteTheme .app_content {
   box-shadow: 0 8px 32px rgba(0, 25, 104, 0.1) !important ;
@@ -36,29 +52,21 @@ html body.wr_whiteTheme,
 .wr_whiteTheme .readerTopBar,
 .wr_whiteTheme .readerBottomBar,
 .wr_whiteTheme .readerBottomSettingPanel,
-.wr_whiteTheme .recommend_preview_item {
+.wr_whiteTheme .recommend_preview_item,
+.wr_whiteTheme .readerFooter_button {
   background-color: #f9f3e8 !important;
 }
 
 /* 隐藏控制条，底部 hover 显示 */
+/* .readerTopBar, */
+/* .readerControls_item, */
 .readerMemberCardTips,
-.readerTopBar,
-.readerControls_item,
-.navBarOffset {
+.navBarOffset
+/* 下载App按钮 */
+.readerControls_item.download {
   display: none !important;
 }
+
 .readerBottomBar {
-  transform: none;
-  display: flex !important;
-  opacity: 0 !important;
-  transition: opacity 400ms ease-out !important;
-}
-.readerBottomBar:hover {
-  display: flex !important;
-  opacity: 1 !important;
-}
-.readerBottomSettingPanel {
-  display: block;
-  top: 88% !important;
-  height: 7% !important;
+  display: none !important;
 }
