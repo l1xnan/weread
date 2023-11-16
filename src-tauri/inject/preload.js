@@ -39,7 +39,7 @@ window.addEventListener("load", (_event) => {
   <button id='autoScroll' class='readerControls_item autoScroll' style='color:#6a6c6c;cursor:pointer;'>滚动X1</button>
   <button id='stopScroll' class='readerControls_item stopScroll' style='color:#6a6c6c;cursor:pointer;'>停止</button>
   `;
-  
+
   document
     .querySelector(".readerControls")
     .insertAdjacentHTML("beforeend", btn1);
@@ -85,6 +85,17 @@ window.addEventListener("load", (_event) => {
       selBtn.style.opacity = 1;
       windowTop = scrollS;
     }
+  });
+  console.log("pre count =", document.querySelectorAll("pre").length);
+  document.querySelectorAll("pre").forEach((elem) => {
+    // 获取当前的 transform 属性值
+    const transform = elem.style.transform;
+    // 正则表达式匹配 translate 中的第一个值
+    // translate(36px, 2423px) -> translate(0px, 2423px)
+    const regex = /translate\((-?\d+px),/;
+    // 替换为 0px
+    elem.style.transform = transform.replace(regex, "translate(0px,");
+    elem.style.width = "auto";
   });
 });
 

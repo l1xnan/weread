@@ -28,6 +28,7 @@ fn main() {
   tauri::Builder::default()
     .plugin(tauri_plugin_window::init())
     .plugin(tauri_plugin_shell::init())
+    .plugin(tauri_plugin_window_state::Builder::default().build())
     .setup(|app| {
       let win = tauri::WindowBuilder::new(
         app,
@@ -35,9 +36,17 @@ fn main() {
         tauri::WindowUrl::External("https://weread.qq.com".parse().unwrap()),
       )
       .initialization_script(include_str!("../inject/preload.js"))
+      .initialization_script(include_str!("../inject/event.js"))
       .initialization_script(&inject_style(include_str!("../inject/style.css")))
       .build()?;
       let _ = win.set_title("微信读书");
+
+      let id = win.listen("location", |event| {
+        println!("got location with payload {:?}", event.payload());
+      });
+
+      win.unlisten(id);
+
       Ok(())
     })
     .invoke_handler(tauri::generate_handler![greet])

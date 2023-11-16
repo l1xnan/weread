@@ -1,5 +1,5 @@
 /* ---------- 设置正文字体 ---------- */
-* {
+*:not(pre) {
   font-family: "仓耳明黑" !important;
 }
 
@@ -24,13 +24,6 @@
 .readerChapterContent {
   margin-left: 2rem;
   margin-right: 2rem;
-}
-/* 字体控制默认透明显示 */
-.readerControls_fontSize {
-  opacity: 0.3 !important;
-}
-.readerControls_fontSize:hover {
-  opacity: 1 !important;
 }
 
 /* ---------- 亮主题设置 ---------- */
@@ -67,14 +60,48 @@ html body.wr_whiteTheme,
   padding-top: 56px !important;
 }
 
-/* 隐藏控制条，底部 hover 显示 */
-/* .readerTopBar, */
-/* .readerControls_item, */
+
+/* 隐藏元素 */
 .readerMemberCardTips,
 .readerControls_item.download /* 下载App按钮 */ {
   display: none !important;
 }
 
+/* 隐藏底部 hover 显示 */
 .readerBottomBar {
   display: none !important;
+}
+
+/* 防止图片宽度溢出 */
+[class="wr_absolute wr_readerImage_opacity"] {
+  width: 100% !important;
+  height: auto !important;
+}
+
+pre,
+pre * {
+  font-family: Consolas !important;
+}
+
+/* ---------- 控制按钮 ---------- */
+.readerControls_item,
+.readerControls_fontSize,
+.readerControls_fontSize .fontSizeButton {
+  height: 36px;
+  width: 36px;
+}
+
+.readerControls_fontSize:not(:first-child),
+.readerControls_item:not(:first-child) {
+  margin-top: 12px;
+}
+
+/* 字体控制默认透明显示 */
+.readerControls_item,
+.readerControls_fontSize {
+  opacity: 0.5 !important;
+}
+.readerControls_item:hover,
+.readerControls_fontSize:hover {
+  opacity: 1 !important;
 }
