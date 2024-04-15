@@ -26,14 +26,13 @@ fn inject_style(css: &str) -> String {
 
 fn main() {
   tauri::Builder::default()
-    .plugin(tauri_plugin_window::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .setup(|app| {
-      let win = tauri::WindowBuilder::new(
+      let win = tauri::WebviewWindowBuilder::new(
         app,
         "weread",
-        tauri::WindowUrl::External("https://weread.qq.com".parse().unwrap()),
+        tauri::WebviewUrl::External("https://weread.qq.com".parse().unwrap()),
       )
       .initialization_script(include_str!("../inject/preload.js"))
       .initialization_script(include_str!("../inject/event.js"))
