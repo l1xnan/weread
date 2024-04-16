@@ -38,18 +38,18 @@ window.addEventListener("load", (_event) => {
 
   document
     .querySelector(".readerControls")
-    .insertAdjacentHTML("beforeend", btn1);
+    ?.insertAdjacentHTML("beforeend", btn1);
 
   // 添加监听
   document
     .getElementById("lv-button1")
-    .addEventListener("click", () => changeWidth(true));
+    ?.addEventListener("click", () => changeWidth(true));
   document
     .getElementById("lv-button2")
-    .addEventListener("click", () => changeWidth(false));
+    ?.addEventListener("click", () => changeWidth(false));
 
   let num = 1;
-  document.querySelector(".autoScroll").addEventListener("click", () => {
+  document.querySelector(".autoScroll")?.addEventListener("click", () => {
     num++;
     if (num > 10) {
       num = 1;
