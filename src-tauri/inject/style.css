@@ -1,7 +1,7 @@
 /* ---------- 设置正文字体 ---------- */
-*:not(pre) {
+/* *:not(pre) {
   font-family: "仓耳明黑" !important;
-}
+} */
 
 /* ---------- 修改滚动条样式 ---------- */
 *::-webkit-scrollbar {
@@ -73,10 +73,10 @@ html body.wr_whiteTheme,
 }
 
 /* 防止图片宽度溢出 */
-[class="wr_absolute wr_readerImage_opacity"] {
+/* [class="wr_absolute wr_readerImage_opacity"] {
   width: 100% !important;
   height: auto !important;
-}
+} */
 
 pre,
 pre * {

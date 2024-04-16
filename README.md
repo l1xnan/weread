@@ -1,7 +1,5 @@
-# Tauri + React + Typescript
+# 微信读书桌面客户端
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+基于 Tauri/Pake 封装的微信读书客户端，主要修改默认字体和背景
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+css 注入参考：https://greasyfork.org/zh-CN/users/1272865

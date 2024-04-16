@@ -16,16 +16,12 @@ function changeWidth(increse) {
   const item1 = document.querySelector(".readerContent .app_content");
   const item2 = document.querySelector(".readerTopBar");
   const currentValue = getCurrentMaxWidth(item1);
-  let changedValue;
-  if (increse) {
-    changedValue = currentValue + step;
-  } else {
-    changedValue = currentValue - step;
-  }
+  const changedValue = currentValue + (increse ? 1 : -1) * step;
+
   item1.style["max-width"] = changedValue + "px";
   item2.style["max-width"] = changedValue + "px";
-  const myEvent = new Event("resize");
-  window.dispatchEvent(myEvent);
+  const event = new Event("resize");
+  window.dispatchEvent(event);
 }
 
 window.addEventListener("load", (_event) => {

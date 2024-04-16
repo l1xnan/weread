@@ -1,0 +1,19 @@
+{
+  "$schema": "./schemas/desktop-schema.json",
+  "identifier": "run-app",
+  "description": "permissions to run the app",
+  "windows": [
+    "main",
+    "main-*",
+    "debug*"
+  ],
+  "permissions": [
+    "path:default",
+    "event:default",
+    "app:default",
+    "window:allow-minimize",
+    "window:allow-toggle-maximize",
+    "window:allow-close",
+    "window:allow-start-dragging"
+  ]
+}
