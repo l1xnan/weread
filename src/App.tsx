@@ -1,20 +1,49 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useEffect, useState } from "react";
+import { Store } from "@tauri-apps/plugin-store";
+
+const store = new Store(".settings.dat");
+
+interface Setting {
+  ["font-family"]: string;
+  ["css"]: string;
+}
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [css, setCss] = useState("");
+  const [fontFamily, setFontFamily] = useState("");
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  useEffect(() => {
+    (async () => {
+      const fontFamily = (await store.get<string>("font-family")) ?? "";
+      setFontFamily(fontFamily);
+      const css = (await store.get<string>("css")) ?? "";
+      setCss(css);
+    })();
+  }, []);
 
+  const handleSave = (key: string, callback: (val: string) => void) => {
+    return async (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const value = e.target.value;
+      callback(value);
+      await store.set(key, value);
+      await store.save();
+    };
+  };
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
+      <div className="row">
+        <label>字体</label>
+        <input
+          value={fontFamily}
+          onChange={handleSave("font-family", setFontFamily)}
+        />
+      </div>
+      <div className="row">
+        <label>CSS片段</label>
+        <textarea value={css} onChange={handleSave("css", setCss)} />
+      </div>
     </div>
   );
 }

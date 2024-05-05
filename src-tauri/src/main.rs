@@ -38,14 +38,20 @@ fn main() {
         let handle = app.handle();
         tray::create_tray(handle)?;
       }
-      let mut store = StoreBuilder::new("config.bin").build(app.handle().clone());
+      let mut store = StoreBuilder::new(".settings.dat").build(app.handle().clone());
+      store.load().expect("Failed to load store from disk");
 
-      let font = store
+      let font_family = store
         .get("font-family")
         .map(|t| t.to_string())
         .unwrap_or("霞鹜文楷".to_string());
 
-      let css = format!("*:not(pre) {{ font-family: {font} !important; }}");
+      let css_snippet = store
+        .get("css")
+        .map(|t| t.to_string())
+        .unwrap_or("".to_string());
+
+      let css = format!("*:not(pre) {{ font-family: {font_family} !important; }}");
       // let width = 800.0;
       // let height = 600.0;
       // let win = tauri::window::WindowBuilder::new(app, "main")
@@ -74,7 +80,6 @@ fn main() {
       //   LogicalPosition::new(0., 30.),
       //   LogicalSize::new(width, height - 30.),
       // )?;
-      
 
       let win = tauri::WebviewWindowBuilder::new(
         app,
@@ -86,6 +91,7 @@ fn main() {
       .initialization_script(include_str!("../inject/preload.js"))
       .initialization_script(include_str!("../inject/event.js"))
       .initialization_script(&inject_style(include_str!("../inject/style.css")))
+      .initialization_script(&inject_style(&css_snippet))
       .initialization_script(&inject_style(&css))
       .build()?;
 
