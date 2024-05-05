@@ -3,11 +3,6 @@ import { Store } from "@tauri-apps/plugin-store";
 
 const store = new Store(".settings.dat");
 
-interface Setting {
-  ["font-family"]: string;
-  ["css"]: string;
-}
-
 function App() {
   const [css, setCss] = useState("");
   const [fontFamily, setFontFamily] = useState("");
