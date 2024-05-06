@@ -5,13 +5,12 @@
 
 mod tray;
 
+use tauri_plugin_store::StoreBuilder;
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn greet(name: &str) -> String {
   format!("Hello, {}! You've been greeted from Rust!", name)
 }
-use tauri_plugin_store::StoreBuilder;
-
 fn inject_style(css: &str) -> String {
   format!(
     r#"
@@ -39,7 +38,7 @@ fn main() {
         tray::create_tray(handle)?;
       }
       let mut store = StoreBuilder::new(".settings.dat").build(app.handle().clone());
-      app
+      let _ = app
         .handle()
         .plugin(tauri_plugin_store::Builder::default().build());
       store.load();
@@ -55,34 +54,6 @@ fn main() {
         .unwrap_or("".to_string());
 
       let css = format!("*:not(pre) {{ font-family: {font_family} !important; }}");
-      // let width = 800.0;
-      // let height = 600.0;
-      // let win = tauri::window::WindowBuilder::new(app, "main")
-      //   .inner_size(width, height)
-      //   .decorations(false)
-      //   .build()?;
-
-      // let _webview1 = win.add_child(
-      //   tauri::webview::WebviewBuilder::new("main1", WebviewUrl::App(Default::default()))
-      //     .auto_resize(),
-      //   LogicalPosition::new(0., 0.),
-      //   LogicalSize::new(width, 30.),
-      // )?;
-
-      // let wechat = tauri::webview::WebviewBuilder::new(
-      //   "main2",
-      //   WebviewUrl::External("https://weread.qq.com".parse().unwrap()),
-      // )
-      // .auto_resize()
-      // .initialization_script(include_str!("../inject/preload.js"))
-      // .initialization_script(include_str!("../inject/event.js"))
-      // .initialization_script(&inject_style(include_str!("../inject/style.css")));
-
-      // let _webview2 = win.add_child(
-      //   wechat,
-      //   LogicalPosition::new(0., 30.),
-      //   LogicalSize::new(width, height - 30.),
-      // )?;
 
       let win = tauri::WebviewWindowBuilder::new(
         app,
@@ -103,8 +74,6 @@ fn main() {
       let id = win.listen("location", |event| {
         println!("got location with payload {:?}", event.payload());
       });
-
-      win.unlisten(id);
 
       Ok(())
     })

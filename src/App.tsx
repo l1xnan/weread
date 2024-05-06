@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { Store } from "@tauri-apps/plugin-store";
+import { useEffect, useState } from "react";
 
 const store = new Store(".settings.dat");
 
