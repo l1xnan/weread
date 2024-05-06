@@ -39,7 +39,10 @@ fn main() {
         tray::create_tray(handle)?;
       }
       let mut store = StoreBuilder::new(".settings.dat").build(app.handle().clone());
-      store.load().expect("Failed to load store from disk");
+      app
+        .handle()
+        .plugin(tauri_plugin_store::Builder::default().build());
+      store.load();
 
       let font_family = store
         .get("font-family")
