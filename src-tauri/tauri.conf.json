@@ -1,33 +1,37 @@
 {
-  "productName": "WeRead",
-  "version": "../package.json",
-  "identifier": "com.qq.weread",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devUrl": "http://localhost:1420",
-    "frontendDist": "../dist"
+    "devPath": "http://localhost:6002",
+    "distDir": "../dist"
   },
-  "app": {
-    "withGlobalTauri": true,
+  "package": {
+    "productName": "WeRead",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      }
+    },
+    "windows": [],
     "security": {
       "csp": null
-    }
-  },
-  "bundle": {
-    "active": true,
-    "targets": "all",
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
-    ]
-  },
-  "plugins": {
-    "shell": {
-      "open": true
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.qq.weread",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
     }
   }
 }
