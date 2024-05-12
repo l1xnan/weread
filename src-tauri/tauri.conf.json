@@ -25,6 +25,7 @@
         {
           "domain": "weread.qq.com",
           "windows": ["weread"],
+          "plugins": ["store"],
           "enableTauriAPI": true
         }
       ]
@@ -40,6 +41,10 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ]
+    },
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
     }
   }
 }

@@ -1,51 +1,61 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useEffect, useState } from "react";
+import { Store } from "tauri-plugin-store-api";
+
+const store = new Store("settings.json");
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [css, setCss] = useState("");
+  const [fontFamily, setFontFamily] = useState("");
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  useEffect(() => {
+    (async () => {
+      const fontFamily = (await store.get<string>("font-family")) ?? "";
+      setFontFamily(fontFamily);
+      const css = (await store.get<string>("css")) ?? "";
+      setCss(css);
+    })();
+  }, []);
 
+  const handleSave = (key: string, callback: (val: string) => void) => {
+    return async (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const value = e.target.value;
+      callback(value);
+      await store.set(key, value);
+      await store.save();
+    };
+  };
+
+  const handleSubmit:React.DOMAttributes<HTMLFormElement>["onSubmit"] = (e) => {
+    e.preventDefault();
+    console.log(e);
+  };
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <label>字体</label>
+          <input
+            value={fontFamily}
+            onChange={handleSave("font-family", setFontFamily)}
+          />
+        </div>
+        <div className="row">
+          <label>CSS片段</label>
+          <textarea value={css} onChange={handleSave("css", setCss)} />
+        </div>
+        <div
+          className="row"
+          style={{
+            justifyContent: "flex-end",
+            gap: "1rem",
+          }}
+        ></div>
+        <button type="submit" style={{ background: "#2da5ff", color: "#fff" }}>
+          应用
+        </button>
       </form>
-
-      <p>{greetMsg}</p>
     </div>
   );
 }
