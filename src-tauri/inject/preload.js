@@ -208,6 +208,7 @@ document.addEventListener("DOMContentLoaded", async (_event) => {
     console.log(key, value);
     if (key == "font-family") {
       injectStyle(fontFamilyCss(value));
+      location.reload();
     }
   });
 });
