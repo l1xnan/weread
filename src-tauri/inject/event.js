@@ -1,5 +1,8 @@
 window.addEventListener("DOMContentLoaded", (_event) => {
-  window.__TAURI__.event.emit("location", {
+  const { invoke, event } = window.__TAURI__;
+  event.emit("location", {
     href: location.href,
   });
+
+  invoke("change_route", { href: location.href });
 });

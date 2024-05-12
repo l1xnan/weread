@@ -29,11 +29,27 @@ window.addEventListener("load", (_event) => {
 
   // 添加内容
   const btn1 = `
-  <button id='lv-button1' class='readerControls_item widthIncrease' style='color:#6a6c6c;cursor:pointer;'>加宽</button>
-  <button id='lv-button2' class='readerControls_item widthDecrease' style='color:#6a6c6c;cursor:pointer;'>减宽</button>
+  <button id='lv-button1' title="加宽" class='readerControls_item extra-item widthIncrease' style='color:#6a6c6c;cursor:pointer;'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  fill="none"  stroke="currentColor" stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-viewport-wide">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12h-7l3 -3m0 6l-3 -3" /><path d="M14 12h7l-3 -3m0 6l3 -3" /><path d="M3 6v-3h18v3" /><path d="M3 18v3h18v-3" />
+    </svg>
+  </button>
+  <button id='lv-button2' title="减宽" class='readerControls_item extra-item widthDecrease' style='color:#6a6c6c;cursor:pointer;'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-viewport-narrow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12h7l-3 -3m0 6l3 -3" /><path d="M21 12h-7l3 -3m0 6l-3 -3" /><path d="M9 6v-3h6v3" /><path d="M9 18v3h6v-3" />
+    </svg>
+  </button>
 
-  <button id='autoScroll' class='readerControls_item autoScroll' style='color:#6a6c6c;cursor:pointer;'>滚动X1</button>
-  <button id='stopScroll' class='readerControls_item stopScroll' style='color:#6a6c6c;cursor:pointer;'>停止</button>
+  <button id='autoScroll' title="滚动" class='readerControls_item extra-item autoScroll' style='color:#6a6c6c;cursor:pointer;font-size:14px;'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-chevrons-down">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8l-3 3l-3 -3" /><path d="M15 13l-3 3l-3 -3" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+    </svg>
+  </button>
+  <button id='stopScroll' title="停止" class='readerControls_item extra-item stopScroll' style='color:#6a6c6c;cursor:pointer;'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-player-pause">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /><path d="M14 5m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+    </svg>
+  </button>
   `;
 
   document
@@ -55,7 +71,7 @@ window.addEventListener("load", (_event) => {
       num = 1;
     }
     autoScroll();
-    document.querySelector(".autoScroll").innerHTML = `播放×${num}`;
+    document.querySelector(".autoScroll").innerHTML = `×${num}`;
   });
 
   // 下划隐藏顶栏，上划显示顶栏

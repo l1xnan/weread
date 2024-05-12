@@ -3,7 +3,8 @@
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
     "devPath": "http://localhost:6002",
-    "distDir": "../dist"
+    "distDir": "../dist",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "WeRead",
@@ -19,7 +20,14 @@
     },
     "windows": [],
     "security": {
-      "csp": null
+      "csp": null,
+      "dangerousRemoteDomainIpcAccess": [
+        {
+          "domain": "weread.qq.com",
+          "windows": ["weread"],
+          "enableTauriAPI": true
+        }
+      ]
     },
     "bundle": {
       "active": true,

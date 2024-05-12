@@ -60,7 +60,6 @@ html body.wr_whiteTheme,
   padding-top: 56px !important;
 }
 
-
 /* 隐藏元素 */
 .readerMemberCardTips,
 .readerControls_item.download /* 下载App按钮 */ {
@@ -104,4 +103,9 @@ pre * {
 .readerControls_item:hover,
 .readerControls_fontSize:hover {
   opacity: 1 !important;
+}
+
+.readerControls_item.extra-item svg.icon {
+  height: 18px;
+  width: 18px;
 }
