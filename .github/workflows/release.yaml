@@ -34,24 +34,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - build: linux
-            os: ubuntu-latest
-            arch: x86_64
-            target: x86_64-unknown-linux-gnu
-          - build: macos
-            os: macos-latest
-            arch: x86_64
-            target: x86_64-apple-darwin
-          - buid: macos
-            os: macos-latest
-            arch: aarch64
-            target: aarch64-apple-darwin
-          - build: windows
-            os: windows-latest
-            arch: x86_64
-            target: x86_64-pc-windows-msvc
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
 
@@ -84,6 +76,10 @@ jobs:
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
@@ -91,11 +87,11 @@ jobs:
           workspaces: './src-tauri -> target'
           key: ${{ runner.os }}
 
-      - name: install webkit2gtk (ubuntu only)
-        if: matrix.os == 'ubuntu-latest'
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
           sudo apt-get update
-          sudo apt-get install -y webkit2gtk-4.1 libayatana-appindicator3-dev
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
       - uses: tauri-apps/tauri-action@v0
         env:
@@ -109,4 +105,3 @@ jobs:
           releaseDraft: true
           prerelease: false
           releaseId: ${{ needs.create-release.outputs.release_id }}
-
