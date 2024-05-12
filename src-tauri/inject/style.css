@@ -109,3 +109,12 @@ pre * {
   height: 18px;
   width: 18px;
 }
+
+/* 隐藏 墨水屏链接 按钮 */
+.navBar_link_ink,
+.navBar_link_ink + .navBar_separator,
+/* 隐藏 下载手机 按钮 */
+.navBar_link_Phone,
+.navBar_link_Phone + .navBar_separator {
+  display: none !important;
+}

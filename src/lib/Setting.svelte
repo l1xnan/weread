@@ -9,7 +9,7 @@
 
   onMount(async () => {
     fontFamily = (await store.get("font-family")) ?? "";
-    cssSnippet = (await store.get("css")) ?? "";
+    cssSnippet = (await store.get("css-snippet")) ?? "";
   });
 
   async function handleSubmit() {

@@ -96,6 +96,7 @@ fn main() {
   let system_tray = SystemTray::new().with_menu(tray_menu);
 
   tauri::Builder::default()
+    .plugin(tauri_plugin_window_state::Builder::default().build())
     .plugin(tauri_plugin_store::Builder::default().build())
     // .on_window_event(|event| match event.event() {
     //   tauri::WindowEvent::CloseRequested { api, .. } => {
@@ -160,7 +161,6 @@ fn main() {
         .and_then(|v| v.as_str())
         .map(|s| s.to_string())
         .unwrap_or("https://weread.qq.com".to_string());
-
 
       let url = Url::parse(&href).unwrap_or(BASE_URL.parse().unwrap());
 

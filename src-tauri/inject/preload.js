@@ -199,7 +199,7 @@ function fontFamilyCss(fontFamily) {
 document.addEventListener("DOMContentLoaded", async (_event) => {
   const store = new Store("settings.json");
   const fontFamily = (await store.get("font-family")) ?? "霞鹜文楷";
-  const cssSnippet = (await store.get("css")) ?? "";
+  const cssSnippet = (await store.get("css-snippet")) ?? "";
 
   injectStyle(fontFamilyCss(fontFamily));
   injectStyle(cssSnippet);
@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", async (_event) => {
     console.log(key, value);
     if (key == "font-family") {
       injectStyle(fontFamilyCss(value));
-      location.reload();
     }
+    location.reload();
   });
 });
