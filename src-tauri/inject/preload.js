@@ -149,7 +149,7 @@ function autoScroll() {
       clearInterval(timer);
     }
     document
-      .querySelector(".stopScroll")
+      .querySelector("#stopScroll")
       .addEventListener("click", function () {
         num = 0;
         clearInterval(timer);
