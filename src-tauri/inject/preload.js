@@ -1,3 +1,7 @@
+let isScrolling = false;
+let scrollSpeed = 1;
+let scrollTimer;
+
 if (window.location.origin === "https://weread.qq.com") {
   console.log("hello world from js init script");
 
@@ -24,8 +28,11 @@ function changeWidth(increse) {
   window.dispatchEvent(event);
 }
 
-window.addEventListener("load", (_event) => {
+window.addEventListener("load", async (_event) => {
   console.log("execute onload...");
+  const store = new Store("settings.json");
+  isScrolling = (await store.get("is-scrolling")) ?? false;
+  scrollSpeed = (await store.get("scroll-speed")) ?? 1;
 
   // 添加内容
   const btnControls = `
@@ -40,15 +47,17 @@ window.addEventListener("load", (_event) => {
     </svg>
   </button>
 
-  <button id='autoScroll' title="滚动" class='readerControls_item extra-item' style='color:#6a6c6c;cursor:pointer;font-size:14px;'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-chevrons-down">
+  <button id='controlScroll' title="滚动" class='readerControls_item extra-item' style='color:#6a6c6c;cursor:pointer;'>
+    <svg id="controlScroll__start" style="display:block;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-chevrons-down">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8l-3 3l-3 -3" /><path d="M15 13l-3 3l-3 -3" /><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
     </svg>
-  </button>
-  <button id='stopScroll' title="停止" class='readerControls_item extra-item' style='color:#6a6c6c;cursor:pointer;'>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-player-pause">
+    <svg id="controlScroll__stop" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-player-pause">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /><path d="M14 5m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
     </svg>
+  </button>
+
+  <button id='autoScroll' title="滚动速度" class='readerControls_item extra-item' style='color:#6a6c6c;cursor:pointer;font-size:14px;display:none;'>
+  ×${scrollSpeed}
   </button>
   `;
 
@@ -90,14 +99,41 @@ window.addEventListener("load", (_event) => {
     .getElementById("widthDecrease")
     ?.addEventListener("click", () => changeWidth(false));
 
-  let num = 1;
-  document.getElementById("autoScroll")?.addEventListener("click", () => {
-    num++;
-    if (num > 10) {
-      num = 1;
+  document.getElementById("controlScroll")?.addEventListener("click", () => {
+    isScrolling = !isScrolling;
+    if (isScrolling) {
+      document.getElementById("autoScroll").style.display = "block";
+      scrollTimer = setInterval(() => {
+        let totalHeight = document.documentElement.scrollTop;
+        let scrollHeight = document.body.scrollHeight;
+        window.scrollBy(0, scrollSpeed);
+        totalHeight += scrollSpeed;
+        if (totalHeight >= scrollHeight) {
+          clearInterval(scrollTimer);
+        }
+      }, 10);
+      document.getElementById("autoScroll").style.display = "block";
+      document.getElementById("controlScroll__start").style.display = "none";
+      document.getElementById("controlScroll__stop").style.display = "block";
+    } else {
+      document.getElementById("autoScroll").style.display = "none";
+      document.getElementById("controlScroll__start").style.display = "block";
+      document.getElementById("controlScroll__stop").style.display = "none";
+      clearInterval(scrollTimer);
     }
-    autoScroll();
-    document.getElementById("stopScroll").innerHTML = `×${num}`;
+    store.set("is-scrolling", isScrolling);
+    store.save();
+  });
+
+  document.getElementById("autoScroll")?.addEventListener("click", () => {
+    scrollSpeed++;
+    if (scrollSpeed > 10) {
+      scrollSpeed = 1;
+    }
+    document.getElementById("autoScroll").innerHTML = `×${scrollSpeed}`;
+    store.set("scroll-speed", scrollSpeed);
+
+    store.save();
   });
 
   // 下划隐藏顶栏，上划显示顶栏
@@ -137,26 +173,6 @@ window.addEventListener("load", (_event) => {
   });
 });
 
-// 滑动屏幕，滚至页面底部
-function autoScroll() {
-  let distance = 1;
-  let timer = setInterval(() => {
-    let totalHeight = document.documentElement.scrollTop;
-    let scrollHeight = document.body.scrollHeight;
-    window.scrollBy(0, distance);
-    totalHeight += distance;
-    if (totalHeight >= scrollHeight) {
-      clearInterval(timer);
-    }
-    document
-      .querySelector("#stopScroll")
-      .addEventListener("click", function () {
-        num = 0;
-        clearInterval(timer);
-      });
-  }, 20);
-}
-
 class Store {
   constructor(path) {
     this.path = path;
@@ -166,6 +182,29 @@ class Store {
     return await invoke("plugin:store|get", {
       path: this.path,
       key,
+    });
+  }
+
+  /**
+   * Inserts a key-value pair into the store.
+   *
+   * @param key
+   * @param value
+   * @returns
+   */
+  async set(key, value) {
+    const { invoke } = window.__TAURI__;
+    return await invoke("plugin:store|set", {
+      path: this.path,
+      key,
+      value,
+    });
+  }
+
+  async save() {
+    const { invoke } = window.__TAURI__;
+    return await invoke("plugin:store|save", {
+      path: this.path,
     });
   }
 
@@ -208,7 +247,7 @@ document.addEventListener("DOMContentLoaded", async (_event) => {
     console.log(key, value);
     if (key == "font-family") {
       injectStyle(fontFamilyCss(value));
+      location.reload();
     }
-    location.reload();
   });
 });
